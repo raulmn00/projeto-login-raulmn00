@@ -20,8 +20,8 @@ export class UserService {
     };
   }
 
-  findByEmail(email: string) {
-    const userFound = this.prisma.user.findUnique({ where: { email } });
+  async findByEmail(email: string) {
+    const userFound = await this.prisma.user.findUnique({ where: { email } });
     return userFound;
   }
 }
