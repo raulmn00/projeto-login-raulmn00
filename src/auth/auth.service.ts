@@ -22,7 +22,9 @@ export class AuthService {
       name: user.name,
     };
 
-    const jwtToken = this.jwtService.sign(payLoad);
+    const jwtToken = this.jwtService.sign(payLoad, {
+      secret: process.env.JWT_SECRET,
+    });
     return {
       access_token: jwtToken,
     };
@@ -33,10 +35,10 @@ export class AuthService {
     if (user) {
       //verificar se a senha informada corresponde a hash do banco de dados
       const isPasswordValid = await bcrypt.compare(password, user.password);
+      delete user.password;
       if (isPasswordValid) {
         return {
           ...user,
-          password: undefined,
         };
       }
     }

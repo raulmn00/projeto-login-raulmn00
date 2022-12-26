@@ -1,5 +1,13 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { IsPublic } from 'src/auth/decorators/isPublic.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwtAuthGuard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 
@@ -11,5 +19,10 @@ export class UserController {
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
+  }
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  get(@Request() req) {
+    return req.user;
   }
 }
